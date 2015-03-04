@@ -5,12 +5,23 @@ var url = require('url');
 
 var data = require('./trending.json');
 
+var mens = require('./men.json');
+
 var categories = {
-    men: 'clothing/men',
-    art: 'art',
-    geek: 'geekery',
-    pets: 'pets',
-}
+        men: 'clothing/men',
+        art: 'art',
+        geek: 'geekery',
+        pets: 'pets',
+    }
+    /*
+        this for loop checks each item and if that item has variations, it
+        spits back the url callback to get the variations
+    */
+for (var i = 0; i < mens.results.length; i++) {
+    if (mens.results[i].has_variations == true) {
+        console.log('https://openapi.etsy.com/v2/listings/' + mens.results[i].listing_id + '?api_key=q4ubii6kukovuc0hl2e8myxx&includes=Variations')
+    }
+};
 
 var API = {
     'protocol': 'https',
@@ -28,6 +39,9 @@ var API = {
          */
         'limit': 50,
         'offset': 0,
+
+        // SEE ABOVE VARIABLES FOR DIFFERENT CATEGORIES
+
         'category': categories.men,
         'api_key': 'q4ubii6kukovuc0hl2e8myxx',
         'fields': 'title,price,has_variations,listing_id',

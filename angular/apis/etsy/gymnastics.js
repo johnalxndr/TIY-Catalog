@@ -5,6 +5,13 @@ var url = require('url');
 
 var data = require('./trending.json');
 
+var categories = {
+    men: 'clothing/men',
+    art: 'art',
+    geek: 'geekery',
+    pets: 'pets',
+}
+
 var API = {
     'protocol': 'https',
     'host': 'openapi.etsy.com',
@@ -21,9 +28,10 @@ var API = {
          */
         'limit': 50,
         'offset': 0,
+        'category': 'men'
         'api_key': 'q4ubii6kukovuc0hl2e8myxx',
-        'fields': 'title,description,price,currency_code',
-        'includes': 'MainImage'
+        'fields': 'title,price',
+        'includes': 'MainImage,Variations'
     },
 };
 
@@ -33,7 +41,7 @@ function urlForAPI() {
         'pathname': API.base + '/' + API.path
     }));
 }
-
+console.log(urlForAPI);
 /**
  * @param Object data from the Etsy API (raw)
  * @returns Object

@@ -16,7 +16,7 @@ var API = {
     'protocol': 'https',
     'host': 'openapi.etsy.com',
     'base': 'v2',
-    'path': 'listings/trending.json',
+    'path': 'listings/active.json',
     // Only use with JSONP...
     // 'pathname': '/v2/listings/trending.js'
     'query': {
@@ -28,10 +28,10 @@ var API = {
          */
         'limit': 50,
         'offset': 0,
-        'category': 'men'
+        'category': categories.men,
         'api_key': 'q4ubii6kukovuc0hl2e8myxx',
-        'fields': 'title,price',
-        'includes': 'MainImage,Variations'
+        'fields': 'title,price,has_variations,listing_id',
+        'includes': 'MainImage'
     },
 };
 

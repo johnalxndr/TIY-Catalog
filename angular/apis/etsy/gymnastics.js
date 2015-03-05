@@ -3,15 +3,12 @@ var assert = require('chai').assert;
 var _ = require('lodash');
 var url = require('url');
 
-var data = require('./trending.json');
+var data = require('./trending/trending.json');
 
-var mens = require('./men.json');
+var mens = require('./men/men.json');
 
 var categories = {
-        men: 'clothing/men',
-        art: 'art',
-        geek: 'geekery',
-        pets: 'pets',
+        men: 'men'
     }
     /*
         this for loop checks each item and if that item has variations, it
@@ -82,7 +79,7 @@ it.skip('should produce the correct URL', function () {
         '&includes=MainImage'
     );
 });
-
+https://openapi.etsy.com/v2/listings/active.json?limit=50&offset=0&api_key=q4ubii6kukovuc0hl2e8myxx&category=art/painting&fields=title,price,has_variations&includes=MainImage
 
 describe('transform', function () {
     describe('given `trending.json` from the API', function () {
@@ -123,7 +120,7 @@ describe('transform', function () {
         var products;
 
         beforeEach(function () {
-            products = transform(require('./men.json'));
+            products = transform(require('./art/men.json'));
         });
 
         describe('everything that `trending.json` has, right?', function () {

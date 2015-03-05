@@ -2,21 +2,22 @@ var expect = require('chai').expect;
 var assert = require('chai').assert;
 var _ = require('lodash');
 var url = require('url');
-
 var data = require('./trending/trending.json');
 
-var mens = require('./men/men.json');
-
 var categories = {
-        men: 'men'
+        art: 'art',
+        clothing: 'clothing',
+        vintage: 'vintage',
+        wedding: 'wedding',
+        jewelry: 'jewelry'
     }
     /*
         this for loop checks each item and if that item has variations, it
         spits back the url callback to get the variations
     */
-for (var i = 0; i < mens.results.length; i++) {
-    if (mens.results[i].has_variations == true) {
-        console.log('https://openapi.etsy.com/v2/listings/' + mens.results[i].listing_id + '?api_key=q4ubii6kukovuc0hl2e8myxx&includes=Variations')
+for (var i = 0; i < data.results.length; i++) {
+    if (data.results[i].has_variations == true) {
+        console.log('https://openapi.etsy.com/v2/listings/' + data.results[i].listing_id + '?api_key=q4ubii6kukovuc0hl2e8myxx&includes=Variations')
     }
 };
 
@@ -36,10 +37,11 @@ var API = {
          */
         'limit': 50,
         'offset': 0,
-
-        // SEE ABOVE VARIABLES FOR DIFFERENT CATEGORIES
-
-        'category': categories.men,
+        /* If you want a sub category add an '/' and name of sub_category as a string after name of `top tier` category
+            - ex: category=categories.art/'printmaking'
+            - ex: category=categories.clothing/'men'
+          SEE ABOVE `categoires` OBJECT FOR DIFFERENT CATEGORIES */
+        'category': categories.art,
         'api_key': 'q4ubii6kukovuc0hl2e8myxx',
         'fields': 'title,price,has_variations,listing_id,num_favorers',
         'includes': 'MainImage'
@@ -79,7 +81,7 @@ it.skip('should produce the correct URL', function () {
         '&includes=MainImage'
     );
 });
-https://openapi.etsy.com/v2/listings/active.json?limit=50&offset=0&api_key=q4ubii6kukovuc0hl2e8myxx&category=art/painting&fields=title,price,has_variations&includes=MainImage
+
 
 describe('transform', function () {
     describe('given `trending.json` from the API', function () {
@@ -87,7 +89,7 @@ describe('transform', function () {
 
         beforeEach(function () {
             // Feed the raw Etsy data to `transform` to get nicer data...
-            trending = transform(require('./trending.json'));
+            trending = transform(require('./trending/trending.json'));
         });
 
         it('should have 50 results', function () {
@@ -120,7 +122,7 @@ describe('transform', function () {
         var products;
 
         beforeEach(function () {
-            products = transform(require('./art/men.json'));
+            products = transform(require('./art/art.json'));
         });
 
         describe('everything that `trending.json` has, right?', function () {
@@ -130,6 +132,13 @@ describe('transform', function () {
           it('should have a `has_variations` field for each item so we can check variations',function(){
             expect(_.pluck(products, 'has_variations')).to.be.length(50)
           })
-        });
-    })
+    }); // END describe `some-category.json`
+});
+
+describe('given a specified `subCategory`, describe the results', function(){
+  it('should show that we forgot to include listing_id', function(){
+    var weddingClothingSub = require('./wedding/weddingSubCategories/category=wedding-clothing.json');
+    expect(weddingClothingSub[0]).to.equal(undefined)
+  })
+})
 });

@@ -44,7 +44,7 @@ var API = {
 
         'category': categories.men,
         'api_key': 'q4ubii6kukovuc0hl2e8myxx',
-        'fields': 'title,price,has_variations,listing_id',
+        'fields': 'title,price,has_variations,listing_id,num_favorers',
         'includes': 'MainImage'
     },
 };
@@ -74,7 +74,7 @@ function transform(data) {
     })
 }
 
-it('should produce the correct URL', function () {
+it.skip('should produce the correct URL', function () {
     expect(urlForAPI()).to.equal(
         'https://openapi.etsy.com/v2/listings/some-category.json' +
         '?limit=50&offset=0&api_key=q4ubii6kukovuc0hl2e8myxx' +
@@ -123,11 +123,16 @@ describe('transform', function () {
         var products;
 
         beforeEach(function () {
-            products = transform(require('./some-category.json'));
+            products = transform(require('./men.json'));
         });
 
         describe('everything that `trending.json` has, right?', function () {
-
+          it('should have 50 results', function(){
+            expect(products).to.be.length(50)
+          })
+          it('should have a `has_variations` field for each item so we can check variations',function(){
+            expect(_.pluck(products, 'has_variations')).to.be.length(50)
+          })
         });
     })
 });
